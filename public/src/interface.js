@@ -1,22 +1,28 @@
 let allPeeps = document.querySelector('#peeps-all');
 let peepButton = document.getElementById('peep')
-
+let newPeep = document.querySelector('#stupidnote')
 
 document.addEventListener('DOMContentLoaded', () => {
   getPeeps()
 
-
-
   peepButton.addEventListener("click", () => {
-    console.log("Iyaaaa")
+    postPeep(newPeep.value)
   })
 })
 
-function postPeep() {
-
+async function postPeep(newPeep) {
+  await fetch("https://chitter-backend-api-v2.herokuapp.com/peeps", {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Token token=_2a_12_nuCcpqyh2UcUHUSgJQmSGe',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({peep: {'user_id':442, 'body':`${newPeep}`}})
+  })
+  getPeeps()
 }
+
 function getPeeps() {
-  var peepArray = []
   fetch("https://chitter-backend-api-v2.herokuapp.com/peeps")
         .then(
           function(response){
@@ -24,6 +30,7 @@ function getPeeps() {
               allPeeps.innerHTML += 'Sorry, the api is not responding'
             }
             response.json().then(x=>{
+              allPeeps.innerHTML = ''
               x.forEach (peep => {
                 allPeeps.innerHTML += peep.body + `</br>`
               })
