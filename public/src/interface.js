@@ -35,12 +35,11 @@ async function signInUser(handle, password) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({user: {'handle':handle, 'password':password}})
+    body: JSON.stringify({session: {'handle':handle, 'password':password}})
   })
   responseJson = await response.json()
-  console.log(responseJson)
-  // sessionKey = responseJson()
-
+  localStorage.setItem("userId", responseJson.user_id)
+  localStorage.setItem("sessionKey", responseJson.session_key)
 }
 
 async function postPeep(newPeep, userId) {
