@@ -9,4 +9,4 @@ I'd like to work on posting peeps before I go into users and sessions. However, 
 `curl "https://chitter-backend-api-v2.herokuapp.com/users" \
   -X POST \
   -H "Content-Type: application/json" \
-  -d '{"user": {"handle":"acava", "password":"########"}}'`
+  -d '{"user": {"handle":"acava", "password":"`redacted`"}}'`
