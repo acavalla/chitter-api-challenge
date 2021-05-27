@@ -29,9 +29,19 @@ async function addNewUser(handle, password) {
   signInUser(responseJson.handle, password)
 }
 
-// function signInUser(handle, password) {
-//
-// }
+async function signInUser(handle, password) {
+  response = await fetch("https://chitter-backend-api-v2.herokuapp.com/sessions", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({user: {'handle':handle, 'password':password}})
+  })
+  responseJson = await response.json()
+  console.log(responseJson)
+  // sessionKey = responseJson()
+
+}
 
 async function postPeep(newPeep, userId) {
   await fetch("https://chitter-backend-api-v2.herokuapp.com/peeps", {
