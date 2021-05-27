@@ -6,18 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
   getPeeps()
 
   peepButton.addEventListener("click", () => {
-    postPeep(newPeep.value)
+    postPeep(newPeep.value, 442)
   })
 })
 
-async function postPeep(newPeep) {
+async function postPeep(newPeep, userId) {
   await fetch("https://chitter-backend-api-v2.herokuapp.com/peeps", {
     method: 'POST',
     headers: {
       'Authorization': 'Token token=_2a_12_nuCcpqyh2UcUHUSgJQmSGe',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({peep: {'user_id':442, 'body':`${newPeep}`}})
+    body: JSON.stringify({peep: {'user_id':userId, 'body':`${newPeep}`}})
   })
   getPeeps()
 }
