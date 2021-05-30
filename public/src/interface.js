@@ -3,6 +3,7 @@ let peepButton = document.getElementById('peep')
 let newPeep = document.querySelector('#stupidnote')
 let signUpButton = document.getElementById('signup')
 let signInButton = document.getElementById('signin')
+let signOutButton = document.getElementById('signout')
 let infoSpot = document.getElementById('info-spot')
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   peepButton.addEventListener("click", () => {
     if(localStorage.userId) {
       infoSpot.innerHTML = ''
-      postPeep(newPeep.value, localStorage.userId)
+      postPeep(newPeep.value, localStorage.userId, localStorage.sessionKey)
     } else {
       infoSpot.innerHTML = 'Please sign in'
     }
@@ -27,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let handle = document.getElementById('signin-handle')
     let password = document.getElementById('signin-password')
     signInUser(handle.value, password.value)
+  })
+
+  signOutButton.addEventListener("click", () => {
+    localStorage.clear()
   })
 })
 
@@ -56,11 +61,11 @@ async function signInUser(handle, password) {
   localStorage.setItem("sessionKey", responseJson.session_key)
 }
 
-async function postPeep(newPeep, userId) {
+async function postPeep(newPeep, userId, token) {
   await fetch("https://chitter-backend-api-v2.herokuapp.com/peeps", {
     method: 'POST',
     headers: {
-      'Authorization': 'Token token=_2a_12_nuCcpqyh2UcUHUSgJQmSGe',
+      'Authorization': `Token token=${token}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({peep: {'user_id':userId, 'body':newPeep}})
