@@ -2,18 +2,31 @@ let allPeeps = document.querySelector('#peeps-all');
 let peepButton = document.getElementById('peep')
 let newPeep = document.querySelector('#stupidnote')
 let signUpButton = document.getElementById('signup')
+let signInButton = document.getElementById('signin')
+let infoSpot = document.getElementById('info-spot')
 
 document.addEventListener('DOMContentLoaded', () => {
   getPeeps()
 
   peepButton.addEventListener("click", () => {
-    postPeep(newPeep.value, 442)
+    if(localStorage.userId) {
+      infoSpot.innerHTML = ''
+      postPeep(newPeep.value, localStorage.userId)
+    } else {
+      infoSpot.innerHTML = 'Please sign in'
+    }
   })
 
   signUpButton.addEventListener("click", () => {
     let handle = document.getElementById('signup-handle')
     let password = document.getElementById('signup-password')
     addNewUser(handle.value, password.value)
+  })
+
+  signInButton.addEventListener("click", () => {
+    let handle = document.getElementById('signin-handle')
+    let password = document.getElementById('signin-password')
+    signInUser(handle.value, password.value)
   })
 })
 
@@ -38,6 +51,7 @@ async function signInUser(handle, password) {
     body: JSON.stringify({session: {'handle':handle, 'password':password}})
   })
   responseJson = await response.json()
+  localStorage.clear()
   localStorage.setItem("userId", responseJson.user_id)
   localStorage.setItem("sessionKey", responseJson.session_key)
 }
