@@ -54,11 +54,23 @@ async function signInUser(handle, password) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({session: {'handle':handle, 'password':password}})
+  }).then(
+    function(response){
+      if(response.status !== 200) {
+        infoSpot.innerHTML = 'Incorrect username or password'
+      }
+      response.json().then(x=>{
+        if(x.user_id){
+          localStorage.clear()
+          localStorage.setItem("userId", x.user_id)
+          localStorage.setItem("sessionKey", x.session_key)
+          infoSpot.innerHTML = `Welcome, ${handle}`
+        }
+      })
   })
-  responseJson = await response.json()
-  localStorage.clear()
-  localStorage.setItem("userId", responseJson.user_id)
-  localStorage.setItem("sessionKey", responseJson.session_key)
+  .catch(function(err){
+    infoSpot.innerHTML = ('Error :(')
+  })
 }
 
 async function postPeep(newPeep, userId, token) {
