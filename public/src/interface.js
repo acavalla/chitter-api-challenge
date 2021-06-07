@@ -11,11 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   peepButton.addEventListener("click", () => {
     if(localStorage.userId) {
-      infoSpot.innerHTML = ''
+      clearUp(infoSpot)
       postPeep(newPeep.value, localStorage.userId, localStorage.sessionKey)
     } else {
       infoSpot.innerHTML = 'Please sign in'
     }
+    clearUp(newPeep)
   })
 
   signUpButton.addEventListener("click", () => {
@@ -47,6 +48,11 @@ async function addNewUser(handle, password) {
   signInUser(responseJson.handle, password)
 }
 
+function clearUp(x) {
+  x.value = ""
+  x.innerHTML = ""
+}
+
 async function signInUser(handle, password) {
   response = await fetch("https://chitter-backend-api-v2.herokuapp.com/sessions", {
     method: 'POST',
@@ -69,7 +75,7 @@ async function signInUser(handle, password) {
       })
   })
   .catch(function(err){
-    infoSpot.innerHTML = ('Error :(')
+    infoSpot.innerHTML = ('Error signing in :(')
   })
 }
 
